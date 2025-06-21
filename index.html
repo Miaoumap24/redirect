@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link rel="icon" href="https://cdn.id.supercell.com/assets/web/portraits/0,chicken,1D1D1D,878787.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chicken Banana</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Empêche les barres de défilement */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black; /* Fond noir par défaut */
+            height: 100vh; /* Prend toute la hauteur de la fenêtre */
+        }
+        #pouleImage {
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+            cursor: pointer;
+            display: none; /* Cache l'image au démarrage */
+        }
+        #boutonLancer {
+            position: fixed; /* Reste au même endroit */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centre le bouton */
+            padding: 20px 40px;
+            font-size: 2em;
+            background-color: #FF69B4; /* Un peu doux et coloré pour toi ! */
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            z-index: 100; /* Assure que le bouton est au-dessus de tout */
+            font-family: sans-serif;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7); /* Pour un effet incroyable */
+            transition: transform 0.2s ease-in-out;
+        }
+        #boutonLancer:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <button id="boutonLancer">Continuer ---></button>
+
+    <img id="pouleImage" src="https://media.tenor.com/yheo1GGu3FwAAAAM/rick-roll-rick-ashley.gif" alt="Une poule géniale">
+
+    <audio id="chickenBananaAudio" src="https://ia800709.us.archive.org/19/items/chicken-banana/CHICKEN%20BANANA.mp3" loop></audio>
+
+    <script>
+        const boutonLancer = document.getElementById('boutonLancer');
+        const pouleImage = document.getElementById('pouleImage');
+        const chickenBananaAudio = document.getElementById('chickenBananaAudio');
+
+        const gifs = [
+            "https://media.tenor.com/yheo1GGu3FwAAAAM/rick-roll-rick-ashley.gif",
+            "https://media.tenor.com/ONQPr0qrCXMAAAAM/wow.gif",
+            "https://gifdb.com/images/high/viral-chicken-dance-at-disco-meme-wpi5dp1yzz8t2m9e.webp",
+            "https://media.tenor.com/nsz8arvWoa8AAAAM/banana.gif",
+            "https://media.tenor.com/PbqEX3ZYEn0AAAAM/carlton-dance-oh-yeah.gif"
+            // Ajoute autant d'URLs de GIFs que tu veux ici !
+        ];
+        let currentGifIndex = 0;
+
+        function changeGif() {
+            currentGifIndex = (currentGifIndex + 1) % gifs.length;
+            pouleImage.src = gifs[currentGifIndex];
+        }
+
+        boutonLancer.addEventListener('click', function() {
+            // Cache le bouton
+            boutonLancer.style.display = 'none';
+
+            // Affiche l'image
+            pouleImage.style.display = 'block';
+
+            // Mets en plein écran (si le navigateur le permet)
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+
+            // Lance la lecture de la musique
+            chickenBananaAudio.play().catch(e => {
+                console.error("La lecture audio a été bloquée par le navigateur :", e);
+                alert("La musique n'a pas pu se lancer automatiquement. Dis à tes potes de cliquer n'importe où !");
+            });
+
+            // Lance le changement de GIF toutes les 5 secondes (5000 millisecondes)
+            setInterval(changeGif, 5000);
+        });
+
+        // Pour relancer la musique si elle est bloquée et que l'utilisateur clique ailleurs
+        document.addEventListener('click', function() {
+            if (chickenBananaAudio.paused && pouleImage.style.display === 'block') {
+                chickenBananaAudio.play().catch(e => console.log("Tentative de relance bloquée"));
+            }
+        });
+    </script>
+</body>
+</html>
